@@ -1,0 +1,197 @@
+<view class="page-shell">
+  <view class="glass-card profile-card">
+    <view class="profile-row">
+      <image
+        wx:if="{{draftAvatarUrl}}"
+        class="profile-avatar"
+        src="{{draftAvatarUrl}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="profile-avatar profile-avatar--fallback">{{profileInitial}}</view>
+
+      <view class="profile-copy">
+        <view class="page-title profile-name">{{profileName}}</view>
+        <view class="page-subtitle">{{profileDescription}}</view>
+      </view>
+    </view>
+
+    <view class="profile-editor">
+      <button class="ghost-button profile-avatar-picker" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+        {{draftAvatarUrl ? '重新选择头像' : '选择微信头像'}}
+      </button>
+      <input
+        class="profile-nickname-input"
+        type="nickname"
+        placeholder="填写你的昵称"
+        value="{{draftNickName}}"
+        bindinput="handleNicknameInput"
+        bindblur="handleNicknameBlur"
+      />
+      <view class="profile-editor__hint">头像会上传到云存储，昵称会用于发帖、申请和榜单展示。</view>
+      <button class="primary-button profile-save" loading="{{savingProfile}}" bindtap="handleSaveProfile">
+        {{profileReady ? '更新资料' : '保存资料'}}
+      </button>
+    </view>
+
+    <view wx:if="{{profileReady && dashboard && dashboard.stats}}" class="stat-grid">
+      <view class="stat-item">
+        <view class="stat-value">{{dashboard.stats.createdCount}}</view>
+        <view class="stat-label">发起过</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{dashboard.stats.joinedCount}}</view>
+        <view class="stat-label">加入过</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{dashboard.stats.historyCount}}</view>
+        <view class="stat-label">历史局数</view>
+      </view>
+    </view>
+
+    <view wx:if="{{profileReady}}" class="quick-actions">
+      <button class="ghost-button quick-actions__btn" bindtap="handleCreateTap">发新帖子</button>
+      <button class="ghost-button quick-actions__btn" bindtap="handleHostManageTap">管理我的发起</button>
+    </view>
+
+    <view wx:if="{{profileReady && dashboard && dashboard.user && dashboard.user.isAdmin}}" class="admin-entry">
+      <view class="admin-entry__copy">
+        <view class="admin-entry__title">管理员工具</view>
+        <view class="admin-entry__subtitle">处理异常帖子和不合适的食堂评论。</view>
+      </view>
+      <button class="ghost-button admin-entry__button" bindtap="handleAdminManageTap">进入管理台</button>
+    </view>
+  </view>
+
+  <section-card
+    wx:if="{{profileReady && dashboard && dashboard.hostPendingRequests.length}}"
+    title="待审批申请"
+    subtitle="发起人可以在这里快速处理加入请求"
+  >
+    <view
+      wx:for="{{dashboard.hostPendingRequests}}"
+      wx:key="id"
+      class="list-row"
+      bindtap="handleHostManageTap"
+    >
+      <view>
+        <view class="list-row__title">{{item.applicantName}} 申请加入</view>
+        <view class="list-row__subtitle">{{item.buildingName}} · {{item.postContent}}</view>
+      </view>
+      <text class="link-text">去处理</text>
+    </view>
+  </section-card>
+
+  <section-card
+    wx:if="{{profileReady && dashboard}}"
+    title="我的发起"
+    subtitle="你发起但还未结束的饭局"
+  >
+    <view wx:if="{{dashboard.myHostedPosts.length}}">
+      <view
+        wx:for="{{dashboard.myHostedPosts}}"
+        wx:key="id"
+        class="list-row"
+        data-post-id="{{item.id}}"
+        bindtap="handlePostTap"
+      >
+        <view>
+          <view class="list-row__title">{{item.content}}</view>
+          <view class="list-row__subtitle">{{item.buildingName}} · {{item.formattedMealTime}}</view>
+        </view>
+        <view class="list-row__meta">
+          <text class="{{item.statusClassName}}">{{item.statusText}}</text>
+          <text class="list-row__seat">剩余 {{item.seatRemaining}}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">你还没有进行中的发起帖子。</view>
+  </section-card>
+
+  <section-card
+    wx:if="{{profileReady && dashboard}}"
+    title="我的参与"
+    subtitle="你已经加入但还没结束的饭局"
+  >
+    <view wx:if="{{dashboard.myJoinedPosts.length}}">
+      <view
+        wx:for="{{dashboard.myJoinedPosts}}"
+        wx:key="id"
+        class="list-row"
+        data-post-id="{{item.id}}"
+        bindtap="handlePostTap"
+      >
+        <view>
+          <view class="list-row__title">{{item.content}}</view>
+          <view class="list-row__subtitle">{{item.buildingName}} · {{item.formattedMealTime}}</view>
+        </view>
+        <view class="list-row__meta">
+          <text class="pill">已加入</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">你还没有进行中的加入记录。</view>
+  </section-card>
+
+  <section-card
+    wx:if="{{profileReady && dashboard}}"
+    title="历史约饭记录"
+    subtitle="到达约饭时间后会自动进入历史"
+  >
+    <view wx:if="{{dashboard.myHistoryPosts.length}}">
+      <view
+        wx:for="{{dashboard.myHistoryPosts}}"
+        wx:key="id"
+        class="list-row"
+        data-post-id="{{item.id}}"
+        bindtap="handlePostTap"
+      >
+        <view>
+          <view class="list-row__title">{{item.content}}</view>
+          <view class="list-row__subtitle">{{item.buildingName}} · {{item.formattedMealTime}}</view>
+        </view>
+        <view class="list-row__meta">
+          <text class="pill">已完成</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">历史约饭还在慢慢累积中。</view>
+  </section-card>
+
+  <section-card
+    wx:if="{{profileReady}}"
+    title="我的常约饭搭子榜"
+    subtitle="和你共同完成约饭次数最多的人"
+  >
+    <view wx:if="{{rankings.buddyRanking.length}}">
+      <view wx:for="{{rankings.buddyRanking}}" wx:key="userId" class="rank-row">
+        <view class="rank-row__left">
+          <view class="rank-badge">{{item.rank}}</view>
+          <view>
+            <view class="list-row__title">{{item.nickname}}</view>
+            <view class="list-row__subtitle">一起吃了 {{item.count}} 次</view>
+          </view>
+        </view>
+        <text class="pill">搭子</text>
+      </view>
+    </view>
+    <view wx:else class="empty-state">你还没有形成搭子榜，先去加入一场饭局吧。</view>
+  </section-card>
+
+  <section-card
+    title="全站活跃榜"
+    subtitle="完成约饭次数最多的用户"
+  >
+    <view wx:if="{{rankings.activeRanking.length}}">
+      <view wx:for="{{rankings.activeRanking}}" wx:key="userId" class="rank-row">
+        <view class="rank-row__left">
+          <view class="rank-badge">{{item.rank}}</view>
+          <view>
+            <view class="list-row__title">{{item.nickname}}</view>
+            <view class="list-row__subtitle">完成 {{item.count}} 场约饭</view>
+          </view>
+        </view>
+        <text wx:if="{{profileReady && dashboard.user && item.userId === dashboard.user.openId}}" class="pill pill-active">我</text>
+      </view>
+    </view>
+  </section-card>
+</view>

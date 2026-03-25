@@ -1,0 +1,12 @@
+<view class="section-card glass-card">
+  <view class="section-card__header">
+    <view>
+      <view class="section-card__title">{{title}}</view>
+      <view wx:if="{{subtitle}}" class="section-card__subtitle">{{subtitle}}</view>
+    </view>
+    <slot name="header-extra" />
+  </view>
+  <view class="section-card__body">
+    <slot />
+  </view>
+</view>

@@ -1,0 +1,62 @@
+<view class="page-shell">
+  <view class="page-title">管理员工具</view>
+  <view class="page-subtitle">处理全站帖子和食堂评论，删除操作会直接生效。</view>
+
+  <view class="glass-card admin-panel">
+    <view class="admin-panel__title">帖子管理</view>
+    <view wx:if="{{dashboard && dashboard.posts.length}}">
+      <view
+        wx:for="{{dashboard.posts}}"
+        wx:key="id"
+        class="admin-row"
+        data-post-id="{{item.id}}"
+        bindtap="handlePostTap"
+      >
+        <view class="admin-row__copy">
+          <view class="admin-row__title">{{item.content}}</view>
+          <view class="admin-row__subtitle">{{item.buildingName}} · {{item.formattedMealTime}} · 发起人 {{item.hostName}}</view>
+        </view>
+        <view class="admin-row__meta">
+          <text class="{{item.statusClassName}}">{{item.statusText}}</text>
+          <button
+            class="admin-row__danger"
+            data-post-id="{{item.id}}"
+            catchtap="handleDeletePost"
+          >
+            删除帖子
+          </button>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">当前没有可管理的帖子。</view>
+  </view>
+
+  <view class="glass-card admin-panel">
+    <view class="admin-panel__title">食堂评论管理</view>
+    <view wx:if="{{dashboard && dashboard.canteenReviews.length}}">
+      <view
+        wx:for="{{dashboard.canteenReviews}}"
+        wx:key="id"
+        class="admin-row admin-row--review"
+        data-canteen-id="{{item.canteenId}}"
+        bindtap="handleCanteenTap"
+      >
+        <view class="admin-row__copy">
+          <view class="admin-row__title">{{item.canteenName}} · {{item.userName}}</view>
+          <view class="admin-row__subtitle">{{item.formattedCreatedAt}} · 综合 {{item.overallScoreText}}</view>
+          <view class="admin-row__content">{{item.content}}</view>
+        </view>
+        <view class="admin-row__meta">
+          <button
+            class="admin-row__danger"
+            data-review-id="{{item.id}}"
+            catchtap="handleDeleteReview"
+          >
+            删除评论
+          </button>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">当前没有需要处理的食堂评论。</view>
+  </view>
+</view>

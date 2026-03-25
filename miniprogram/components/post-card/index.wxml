@@ -1,0 +1,35 @@
+<view class="post-card glass-card" bindtap="handleTap">
+  <view class="post-card__glow post-card__glow--top"></view>
+  <view class="post-card__glow post-card__glow--side"></view>
+
+  <view class="post-card__header">
+    <view class="post-card__host">
+      <image
+        wx:if="{{post.hostAvatar}}"
+        class="post-card__avatar"
+        src="{{post.hostAvatar}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="post-card__avatar post-card__avatar--fallback">{{post.hostInitial}}</view>
+      <text class="post-card__host-name">{{post.hostName}}</text>
+    </view>
+    <text class="{{post.statusClassName}}">{{post.statusText}}</text>
+  </view>
+
+  <view class="post-card__content">{{post.content}}</view>
+
+  <view class="post-card__meta">
+    <text class="pill">{{post.buildingName}}</text>
+    <text wx:if="{{post.requiresApproval}}" class="pill">需申请</text>
+  </view>
+
+  <view class="post-card__location">{{post.locationPreview}}</view>
+
+  <view class="post-card__footer">
+    <view>
+      <text class="post-card__time">{{post.formattedMealTime}}</text>
+      <text class="post-card__time-hint">{{post.timeLabel}}</text>
+    </view>
+    <text class="post-card__seat">剩余 {{post.seatRemaining}} / {{post.seatTotal}}</text>
+  </view>
+</view>

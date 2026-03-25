@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "发现约饭",
+  "usingComponents": {
+    "post-card": "/components/post-card/index"
+  },
+  "enablePullDownRefresh": true,
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
+}

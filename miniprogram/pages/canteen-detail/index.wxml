@@ -1,0 +1,184 @@
+<view class="page-shell">
+  <view wx:if="{{canteen}}" class="canteen-detail">
+    <view class="glass-card canteen-hero-card">
+      <view class="canteen-hero-card__top">
+        <view class="canteen-hero-card__intro">
+          <view class="canteen-hero-card__name">{{canteen.name}}</view>
+          <view class="canteen-hero-card__meta">{{canteen.buildingName}} · {{canteen.location}}</view>
+        </view>
+
+        <view class="canteen-overall">
+          <view class="canteen-overall__value">{{canteen.overallScoreText}}</view>
+          <view class="rating-stars canteen-overall__stars">
+            <text class="rating-stars__base">★★★★★</text>
+            <view class="rating-stars__fill" style="width: {{canteen.overallStarWidth}};">
+              <text>★★★★★</text>
+            </view>
+          </view>
+          <view class="canteen-overall__count">{{canteen.reviewCountText}}</view>
+        </view>
+      </view>
+
+      <view class="canteen-hero-card__description">{{canteen.description}}</view>
+
+      <view class="canteen-hero-card__dishes">
+        <text
+          wx:for="{{canteen.featuredDishes}}"
+          wx:key="*this"
+          wx:for-item="dish"
+          class="pill canteen-hero-card__dish"
+        >
+          {{dish}}
+        </text>
+      </view>
+
+      <view class="canteen-hero-card__metrics">
+        <view
+          wx:for="{{canteen.metrics}}"
+          wx:key="label"
+          wx:for-item="metric"
+          class="detail-metric"
+        >
+          <view class="detail-metric__label">{{metric.label}}</view>
+          <view class="detail-metric__value">{{metric.scoreText}}</view>
+          <view class="rating-stars detail-metric__stars">
+            <text class="rating-stars__base">★★★★★</text>
+            <view class="rating-stars__fill" style="width: {{metric.starWidth}};">
+              <text>★★★★★</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="glass-card review-editor">
+      <view class="detail-section__title">写下你的评分</view>
+      <view class="review-editor__subtitle">综合分会根据环境、味道、价格三项自动平均。</view>
+
+      <view class="review-editor__overall">
+        <view class="review-editor__overall-value">{{draftOverallText}}</view>
+        <view class="rating-stars review-editor__overall-stars">
+          <text class="rating-stars__base">★★★★★</text>
+          <view class="rating-stars__fill" style="width: {{draftOverallStarWidth}};">
+            <text>★★★★★</text>
+          </view>
+        </view>
+      </view>
+
+      <view
+        wx:for="{{draftScoreFields}}"
+        wx:key="key"
+        wx:for-item="field"
+        class="score-row"
+      >
+        <view class="score-row__header">
+          <text>{{field.label}}</text>
+          <text>{{field.value}}.0</text>
+        </view>
+        <view class="score-row__stars">
+          <text
+            wx:for="{{scoreOptions}}"
+            wx:key="*this"
+            wx:for-item="score"
+            class="score-row__star {{score <= field.value ? 'score-row__star--active' : ''}}"
+            data-field="{{field.key}}"
+            data-value="{{score}}"
+            bindtap="handleScoreTap"
+          >
+            ★
+          </text>
+        </view>
+      </view>
+
+      <textarea
+        class="review-editor__textarea"
+        maxlength="300"
+        placeholder="说说你对这家食堂的真实感受，比如高峰期排队、哪些菜值得点、环境适不适合约饭。"
+        value="{{draft.content}}"
+        bindinput="handleReviewInput"
+      />
+
+      <button
+        class="primary-button review-editor__submit"
+        loading="{{submitting}}"
+        disabled="{{submitting}}"
+        bindtap="handleSubmitReview"
+      >
+        发布评分和评论
+      </button>
+    </view>
+
+    <view class="glass-card review-section">
+      <view class="detail-section__title">最新评论</view>
+
+      <view wx:if="{{!canteen.reviews.length}}" class="empty-state review-section__empty">
+        <view>还没有评论。</view>
+        <view class="page-subtitle">来写下第一条真实体验吧。</view>
+      </view>
+
+      <view
+        wx:for="{{canteen.reviews}}"
+        wx:key="id"
+        wx:for-item="review"
+        class="review-card"
+      >
+        <view class="review-card__top">
+          <view class="review-card__user">
+            <image
+              wx:if="{{review.userAvatar}}"
+              class="review-card__avatar"
+              src="{{review.userAvatar}}"
+              mode="aspectFill"
+            />
+            <view wx:else class="review-card__avatar review-card__avatar--fallback">{{review.userInitial}}</view>
+            <view>
+              <view class="review-card__name">{{review.userName}}</view>
+              <view class="review-card__time">{{review.formattedCreatedAt}}</view>
+            </view>
+          </view>
+
+          <view class="review-card__overall">
+            <view class="review-card__overall-value">{{review.overallScoreText}}</view>
+            <view class="rating-stars review-card__overall-stars">
+              <text class="rating-stars__base">★★★★★</text>
+              <view class="rating-stars__fill" style="width: {{review.overallStarWidth}};">
+                <text>★★★★★</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="review-card__content">{{review.content}}</view>
+
+        <view class="review-card__badges">
+          <view
+            wx:for="{{review.metricBadges}}"
+            wx:key="label"
+            wx:for-item="metric"
+            class="pill review-card__badge"
+          >
+            {{metric.label}} {{metric.scoreText}}
+          </view>
+        </view>
+
+        <view class="review-card__actions">
+          <view
+            class="review-card__like {{review.liked ? 'review-card__like--active' : ''}}"
+            data-id="{{review.id}}"
+            catchtap="handleLikeTap"
+          >
+            {{review.likeText}}
+          </view>
+          <button
+            wx:if="{{review.canDelete}}"
+            class="review-card__delete"
+            data-id="{{review.id}}"
+            catchtap="handleDeleteReview"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

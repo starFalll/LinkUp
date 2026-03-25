@@ -1,0 +1,66 @@
+<view class="page-shell">
+  <view class="feed-hero">
+    <view class="page-title">今天去和谁一起吃饭？</view>
+    <view class="page-subtitle">像刷小红书一样发现附近的约饭局，想去就加入，想聊就申请。</view>
+  </view>
+
+  <view class="feed-toolbar glass-card">
+    <input
+      class="feed-search"
+      placeholder="搜索约饭内容"
+      value="{{keyword}}"
+      bindinput="handleKeywordInput"
+      bindconfirm="handleKeywordConfirm"
+      confirm-type="search"
+    />
+
+    <scroll-view class="feed-filter-row" scroll-x enable-flex>
+      <view
+        wx:for="{{buildingOptions}}"
+        wx:key="id"
+        class="pill {{activeBuildingId === item.id ? 'pill-active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="handleBuildingFilterTap"
+      >
+        {{item.name}}
+      </view>
+    </scroll-view>
+
+    <scroll-view class="feed-filter-row" scroll-x enable-flex>
+      <view
+        wx:for="{{statusOptions}}"
+        wx:key="value"
+        class="pill {{activeStatus === item.value ? 'pill-active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="handleStatusFilterTap"
+      >
+        {{item.label}}
+      </view>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{!posts.length && !loading}}" class="empty-state glass-card">
+    <view>还没有符合条件的约饭帖子。</view>
+    <view class="page-subtitle">不如你来发第一条，约大家一起吃点好的。</view>
+    <button class="primary-button feed-create-button" bindtap="handleCreateTap">马上发帖</button>
+  </view>
+
+  <view wx:else class="feed-waterfall">
+    <view class="feed-column">
+      <post-card
+        wx:for="{{leftColumn}}"
+        wx:key="id"
+        post="{{item}}"
+        bindtap="handleCardTap"
+      />
+    </view>
+    <view class="feed-column">
+      <post-card
+        wx:for="{{rightColumn}}"
+        wx:key="id"
+        post="{{item}}"
+        bindtap="handleCardTap"
+      />
+    </view>
+  </view>
+</view>

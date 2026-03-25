@@ -1,0 +1,151 @@
+.detail-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.detail-hero,
+.detail-section {
+  padding: 28rpx 24rpx;
+}
+
+.detail-hero__top,
+.detail-host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detail-host {
+  justify-content: flex-start;
+  gap: 16rpx;
+}
+
+.detail-avatar,
+.member-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #f2dfd2;
+}
+
+.detail-avatar--fallback,
+.member-avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a4d34;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.detail-host__name {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.detail-host__meta {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: var(--ink-700);
+}
+
+.detail-content {
+  margin-top: 24rpx;
+  font-size: 36rpx;
+  line-height: 1.45;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.detail-grid {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 24rpx;
+}
+
+.detail-grid__item {
+  flex: 1;
+  padding: 20rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 244, 234, 0.94);
+}
+
+.detail-grid__label {
+  font-size: 22rpx;
+  color: var(--ink-700);
+}
+
+.detail-grid__value {
+  margin-top: 10rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.detail-location {
+  margin-top: 24rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 244, 234, 0.94);
+}
+
+.detail-location__value {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: var(--ink-900);
+}
+
+.detail-location__value--muted {
+  color: var(--ink-500);
+}
+
+.detail-action {
+  margin-top: 28rpx;
+}
+
+.detail-manage {
+  margin-top: 18rpx;
+}
+
+.detail-delete {
+  margin-top: 18rpx;
+  color: var(--danger);
+}
+
+.detail-section__title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid rgba(203, 175, 155, 0.22);
+}
+
+.member-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.member-row__user {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.member-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.member-role {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: var(--ink-700);
+}

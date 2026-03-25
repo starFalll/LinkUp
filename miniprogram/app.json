@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/feed/index",
+    "pages/canteen/index",
+    "pages/create/index",
+    "pages/my/index",
+    "pages/post-detail/index",
+    "pages/host-manage/index",
+    "pages/canteen-detail/index",
+    "pages/admin-manage/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "LinkUp",
+    "navigationBarBackgroundColor": "#f7efe5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7efe5",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#745f50",
+    "selectedColor": "#d4663b",
+    "backgroundColor": "#fff7f0",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/feed/index",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/canteen/index",
+        "text": "食堂"
+      },
+      {
+        "pagePath": "pages/create/index",
+        "text": "发帖"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

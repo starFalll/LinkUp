@@ -1,0 +1,104 @@
+<view class="page-shell">
+  <view class="page-title">发一个想去的饭局</view>
+  <view class="page-subtitle">填好楼宇、时间和座位信息，让别人一眼就知道要不要加入你这顿饭。</view>
+
+  <view class="glass-card login-card">
+    <view class="login-card__title">{{profileName}}</view>
+    <view class="login-card__subtitle">{{profileDescription}}</view>
+    <button wx:if="{{!profile || !profile.nickName}}" class="primary-button login-card__button" bindtap="handleGoProfile">去完善资料</button>
+    <view wx:else class="login-card__status">当前昵称：{{profile.nickName}}</view>
+  </view>
+
+  <view class="glass-card create-form">
+    <view class="form-block">
+      <view class="form-label">选择 building</view>
+      <input
+        class="form-input"
+        placeholder="搜索楼宇，例如 Commons"
+        value="{{buildingQuery}}"
+        bindinput="handleBuildingQueryInput"
+      />
+      <scroll-view class="building-list" scroll-y>
+        <view
+          wx:for="{{filteredBuildings}}"
+          wx:key="id"
+          class="building-item {{form.buildingId === item.id ? 'building-item--active' : ''}}"
+          data-id="{{item.id}}"
+          data-name="{{item.name}}"
+          bindtap="handleSelectBuilding"
+        >
+          <text>{{item.name}}</text>
+          <text class="building-alias">{{item.aliasText}}</text>
+        </view>
+      </scroll-view>
+      <view wx:if="{{selectedBuildingName}}" class="selected-chip">已选择：{{selectedBuildingName}}</view>
+    </view>
+
+    <view class="form-block">
+      <view class="form-label">约饭内容</view>
+      <textarea
+        class="form-textarea"
+        maxlength="120"
+        placeholder="写点吸引人的，比如想吃什么、风格、有没有想聊天..."
+        value="{{form.content}}"
+        bindinput="handleContentInput"
+      />
+    </view>
+
+    <view class="form-block">
+      <view class="form-label">具体位置</view>
+      <input
+        class="form-input"
+        placeholder="比如 Commons 1F Pasta Bar"
+        value="{{form.location}}"
+        bindinput="handleLocationInput"
+      />
+      <view class="form-hint">如果开启需申请，这个位置会在申请通过后才显示给对方。</view>
+    </view>
+
+    <view class="form-grid">
+      <view class="form-grid__item">
+        <view class="form-label">剩余座位数</view>
+        <input
+          class="form-input"
+          type="number"
+          value="{{form.seatTotal}}"
+          bindinput="handleSeatChange"
+        />
+      </view>
+
+      <view class="form-grid__item">
+        <view class="form-label">加入方式</view>
+        <view class="switch-row">
+          <text>{{form.requiresApproval ? '需申请' : '可直接加入'}}</text>
+          <switch color="#d4663b" checked="{{form.requiresApproval}}" bindchange="handleApprovalSwitch" />
+        </view>
+      </view>
+    </view>
+
+    <view class="form-grid">
+      <view class="form-grid__item">
+        <view class="form-label">日期</view>
+        <picker mode="date" value="{{dateValue}}" bindchange="handleDateChange">
+          <view class="form-picker">{{dateValue}}</view>
+        </picker>
+      </view>
+
+      <view class="form-grid__item">
+        <view class="form-label">时间</view>
+        <picker mode="time" value="{{timeValue}}" bindchange="handleTimeChange">
+          <view class="form-picker">{{timeValue}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <button
+      class="primary-button"
+      loading="{{submitting}}"
+      disabled="{{!profile || !profile.nickName || submitting}}"
+      bindtap="handleSubmit"
+    >
+      {{profile && profile.nickName ? '发布约饭' : '完善资料后发布'}}
+    </button>
+  </view>
+</view>

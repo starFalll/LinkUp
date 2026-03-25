@@ -1,0 +1,39 @@
+.feed-hero {
+  padding: 14rpx 6rpx 24rpx;
+}
+
+.feed-toolbar {
+  padding: 22rpx;
+  margin-bottom: 24rpx;
+}
+
+.feed-search {
+  height: 78rpx;
+  padding: 0 24rpx;
+  border-radius: 22rpx;
+  background: rgba(255, 244, 234, 0.95);
+  font-size: 28rpx;
+}
+
+.feed-filter-row {
+  margin-top: 18rpx;
+  white-space: nowrap;
+}
+
+.feed-filter-row .pill {
+  margin-right: 16rpx;
+}
+
+.feed-waterfall {
+  display: flex;
+  gap: 18rpx;
+  align-items: flex-start;
+}
+
+.feed-column {
+  flex: 1;
+}
+
+.feed-create-button {
+  margin-top: 28rpx;
+}

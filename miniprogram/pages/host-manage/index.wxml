@@ -1,0 +1,51 @@
+<view class="page-shell">
+  <view class="page-title">管理我的发起</view>
+  <view class="page-subtitle">在这里审批申请、查看你发起的帖子状态和剩余座位。</view>
+
+  <view class="glass-card host-panel">
+    <view class="host-panel__title">待审批申请</view>
+    <view wx:if="{{dashboard && dashboard.hostPendingRequests.length}}">
+      <view wx:for="{{dashboard.hostPendingRequests}}" wx:key="id" class="request-row">
+        <view class="request-row__copy">
+          <view class="request-row__title">{{item.applicantName}} 想加入你的约饭</view>
+          <view class="request-row__subtitle">{{item.buildingName}} · {{item.postContent}}</view>
+        </view>
+        <view class="request-row__actions">
+          <button class="request-btn request-btn--ghost" data-id="{{item.id}}" data-action="reject" bindtap="handleReview">拒绝</button>
+          <button class="request-btn request-btn--primary" data-id="{{item.id}}" data-action="approve" bindtap="handleReview">通过</button>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">暂时没有新的申请，去首页看看有没有人刚刷到你的帖子。</view>
+  </view>
+
+  <view class="glass-card host-panel">
+    <view class="host-panel__title">我的进行中帖子</view>
+    <view wx:if="{{dashboard && dashboard.myHostedPosts.length}}">
+      <view
+        wx:for="{{dashboard.myHostedPosts}}"
+        wx:key="id"
+        class="post-row"
+        data-post-id="{{item.id}}"
+        bindtap="handlePostTap"
+      >
+        <view>
+          <view class="request-row__title">{{item.content}}</view>
+          <view class="request-row__subtitle">{{item.buildingName}} · {{item.formattedMealTime}}</view>
+        </view>
+        <view class="post-row__meta">
+          <text class="{{item.statusClassName}}">{{item.statusText}}</text>
+          <text class="post-row__seat">剩余 {{item.seatRemaining}} / {{item.seatTotal}}</text>
+          <button
+            class="request-btn request-btn--danger post-row__delete"
+            data-post-id="{{item.id}}"
+            catchtap="handleDeletePost"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">你还没有进行中的发起帖子。</view>
+  </view>
+</view>

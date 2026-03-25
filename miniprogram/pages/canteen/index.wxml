@@ -1,0 +1,77 @@
+<view class="page-shell">
+  <view class="canteen-hero">
+    <view class="page-title">今天食堂吃什么？</view>
+    <view class="page-subtitle">看看大家给每个食堂打了多少分，先比环境、味道和价格，再决定中午冲哪一家。</view>
+  </view>
+
+  <view wx:if="{{!canteens.length && !loading}}" class="glass-card empty-state">
+    <view>还没有食堂评分数据。</view>
+    <view class="page-subtitle">先去详情页打第一条评论吧。</view>
+  </view>
+
+  <view wx:else class="canteen-list">
+    <view
+      wx:for="{{canteens}}"
+      wx:key="id"
+      wx:for-item="canteen"
+      class="glass-card canteen-card"
+      data-id="{{canteen.id}}"
+      bindtap="handleCardTap"
+    >
+      <view class="canteen-card__header">
+        <view class="canteen-card__intro">
+          <view class="canteen-card__badge">食堂评分</view>
+          <view class="canteen-card__name">{{canteen.name}}</view>
+          <view class="canteen-card__meta">{{canteen.buildingName}} · {{canteen.location}}</view>
+        </view>
+
+        <view class="canteen-score">
+          <view class="canteen-score__value">{{canteen.overallScoreText}}</view>
+          <view class="rating-stars canteen-score__stars">
+            <text class="rating-stars__base">★★★★★</text>
+            <view class="rating-stars__fill" style="width: {{canteen.overallStarWidth}};">
+              <text>★★★★★</text>
+            </view>
+          </view>
+          <view class="canteen-score__count">{{canteen.reviewCountText}}</view>
+        </view>
+      </view>
+
+      <view class="canteen-card__description">{{canteen.description}}</view>
+
+      <view class="canteen-card__metrics">
+        <view
+          wx:for="{{canteen.metrics}}"
+          wx:key="label"
+          wx:for-item="metric"
+          class="canteen-metric"
+        >
+          <view class="canteen-metric__top">
+            <text>{{metric.label}}</text>
+            <text>{{metric.scoreText}}</text>
+          </view>
+          <view class="rating-stars canteen-metric__stars">
+            <text class="rating-stars__base">★★★★★</text>
+            <view class="rating-stars__fill" style="width: {{metric.starWidth}};">
+              <text>★★★★★</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="canteen-card__footer">
+        <view class="canteen-card__dishes">
+          <text
+            wx:for="{{canteen.featuredDishes}}"
+            wx:key="*this"
+            wx:for-item="dish"
+            class="pill canteen-card__dish"
+          >
+            {{dish}}
+          </text>
+        </view>
+        <view class="canteen-card__link">查看评分详情</view>
+      </view>
+    </view>
+  </view>
+</view>

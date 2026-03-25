@@ -1,0 +1,105 @@
+<view class="page-shell">
+  <view wx:if="{{post}}" class="detail-stack">
+    <view class="glass-card detail-hero">
+      <view class="detail-hero__top">
+        <view class="detail-host">
+          <image
+            wx:if="{{post.hostAvatar}}"
+            class="detail-avatar"
+            src="{{post.hostAvatar}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="detail-avatar detail-avatar--fallback">{{post.hostInitial}}</view>
+          <view>
+            <view class="detail-host__name">{{post.hostName}}</view>
+            <view class="detail-host__meta">{{post.buildingName}} · {{post.formattedMealTime}}</view>
+          </view>
+        </view>
+        <text class="tag-status status-{{post.status}}">{{post.statusText}}</text>
+      </view>
+
+      <view class="detail-content">{{post.content}}</view>
+
+      <view class="detail-grid">
+        <view class="detail-grid__item">
+          <view class="detail-grid__label">剩余座位</view>
+          <view class="detail-grid__value">{{post.seatRemaining}} / {{post.seatTotal}}</view>
+        </view>
+        <view class="detail-grid__item">
+          <view class="detail-grid__label">加入方式</view>
+          <view class="detail-grid__value">{{post.requiresApprovalText}}</view>
+        </view>
+      </view>
+
+      <view class="detail-location">
+        <view class="detail-grid__label">具体位置</view>
+        <view class="detail-location__value {{post.locationMutedClass}}">
+          {{post.location}}
+        </view>
+      </view>
+
+      <button
+        class="primary-button detail-action"
+        bindtap="handlePrimaryAction"
+        disabled="{{actionDisabled}}"
+      >
+        {{actionText}}
+      </button>
+
+      <button
+        wx:if="{{post.joinActionState === 'owner' && post.pendingRequests.length}}"
+        class="ghost-button detail-manage"
+        bindtap="handleManageTap"
+      >
+        查看 {{post.pendingRequests.length}} 条待审批申请
+      </button>
+
+      <button
+        wx:if="{{post.canDelete}}"
+        class="ghost-button detail-delete"
+        bindtap="handleDeletePost"
+      >
+        删除帖子
+      </button>
+    </view>
+
+    <view class="glass-card detail-section">
+      <view class="detail-section__title">已加入成员</view>
+      <view wx:for="{{post.participants}}" wx:key="_id" class="member-row">
+        <view class="member-row__user">
+          <image
+            wx:if="{{item.userAvatar}}"
+            class="member-avatar"
+            src="{{item.userAvatar}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="member-avatar member-avatar--fallback">{{item.userInitial}}</view>
+          <view>
+            <view class="member-name">{{item.userName}}</view>
+            <view class="member-role">{{item.roleText}}</view>
+          </view>
+        </view>
+        <view class="pill">{{item.joinMethodText}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{post.pendingRequests.length}}" class="glass-card detail-section">
+      <view class="detail-section__title">待审批申请</view>
+      <view wx:for="{{post.pendingRequests}}" wx:key="id" class="member-row">
+        <view class="member-row__user">
+          <image
+            wx:if="{{item.applicantAvatar}}"
+            class="member-avatar"
+            src="{{item.applicantAvatar}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="member-avatar member-avatar--fallback">{{item.applicantInitial}}</view>
+          <view>
+            <view class="member-name">{{item.applicantName}}</view>
+            <view class="member-role">申请中</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
